@@ -1,0 +1,17 @@
+{
+  "darkTheme" :"Karanlık Tema",
+  "lightTheme": "Aydınlık Tema",
+  "language": "Dil",
+  "gridView": "Kılavuz Görünümü",
+  "listView": "Liste Görünümü",
+  "title": "Başlık",
+  "startTyping": "Yazmaya Başla",
+  "addFirstNote": "İlk Notunu Ekle",
+  "lang": "TR",
+  "ays": "Emin misin?",
+  "no": "Hayır",
+  "yes": "Evet",
+  "empty": "Not boş olamaz !",
+  "alert": "Uyarı",
+  "ok": "Tamam"
+}

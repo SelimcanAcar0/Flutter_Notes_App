@@ -1,0 +1,17 @@
+{
+  "darkTheme" :"Dark Theme",
+  "lightTheme": "Light Theme",
+  "language": "Language",
+  "gridView": "Grid View",
+  "listView": "List View",
+  "title": "Title",
+  "startTyping": "Start Typing",
+  "addFirstNote": "Add First Note",
+  "lang": "EN",
+  "ays": "Are you sure?",
+  "no": "No",
+  "yes": "Yes",
+  "empty": "Note cannot be empty !",
+  "alert": "Alert !",
+  "ok": "Ok"
+}
