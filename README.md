@@ -1,6 +1,6 @@
 # notes
 
-A new Flutter project.
+Take Note  for anything
 
 ## Getting Started
 
