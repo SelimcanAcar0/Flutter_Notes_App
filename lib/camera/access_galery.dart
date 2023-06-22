@@ -65,7 +65,7 @@ class _AccessGaleryState extends State<GalleryAccess> {
   }
 
   getFromGallery() async {
-    PickedFile? pickedFile = await ImagePicker().getImage(source: ImageSource.gallery, maxWidth: 1500, maxHeight: 1500, imageQuality: 50);
+    XFile? pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 1500, maxHeight: 1500, imageQuality: 50);
     if (pickedFile != null) {
       setState(() {
         imageFile = File(pickedFile.path);
