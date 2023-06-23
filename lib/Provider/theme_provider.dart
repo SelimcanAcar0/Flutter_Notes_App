@@ -5,8 +5,8 @@ class ThemeProvider extends ChangeNotifier {
   late ThemeData selectedTheme;
   late SharedPreferences prefs;
 
-  ThemeData dark = ThemeData.dark(useMaterial3: true).copyWith();
-  ThemeData light = ThemeData.light().copyWith();
+  ThemeData dark = ThemeData.dark().copyWith(visualDensity: VisualDensity.adaptivePlatformDensity);
+  ThemeData light = ThemeData.light().copyWith(visualDensity: VisualDensity.adaptivePlatformDensity);
 
   ThemeProvider(bool darkThemeOn) {
     selectedTheme = darkThemeOn ? dark : light;
