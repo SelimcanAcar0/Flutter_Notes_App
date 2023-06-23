@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:notes/constant/text.dart';
 import 'package:notes/notes_detail_page.dart';
 import 'package:notes/Provider/view_class.dart';
 import 'package:notes/write_note_page.dart';
@@ -64,54 +65,87 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     );
   }
 
+  //! Widgets and Method
+
   Drawer pageDrawer() {
     return Drawer(
-      shape: const Border(left: BorderSide(width: 1)),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: Consumer<ThemeProvider>(
-              builder: (context, themeValue, child) {
-                return ListTile(
-                  onTap: () {
-                    Provider.of<ThemeProvider>(context, listen: false).swapTheme();
+      shape: const OutlineInputBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100), topLeft: Radius.circular(20))),
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Consumer<ThemeProvider>(
+                  builder: (context, themeValue, child) {
+                    return themeListTile(context, themeValue);
                   },
-                  visualDensity: VisualDensity.compact,
-                  style: ListTileStyle.list,
-                  shape: const RoundedRectangleBorder(
-                    side: BorderSide(width: 1),
-                  ),
-                  title: Text(themeValue.selectedTheme == themeValue.dark ? "darkTheme".tr() : "lightTheme".tr()),
-                  leading: themeValue.selectedTheme == themeValue.light
-                      ? const Icon(
-                          Icons.sunny,
-                          color: Colors.yellow,
-                        )
-                      : const Icon(
-                          Icons.dark_mode,
-                          color: Colors.grey,
-                        ),
-                );
-              },
-            ),
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Consumer<ThemeProvider>(
+                    builder: (context, themeValue, child) {
+                      return languageListTile(context, themeValue);
+                    },
+                  )),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Consumer2<viewClass, ThemeProvider>(builder: (context, value, themeValue, child) {
+                  return switchViewListView(context, value, themeValue);
+                }),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: languageListTile(),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Consumer<viewClass>(builder: (context, value, child) {
-              return switchViewListView(context);
-            }),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  ListTile switchViewListView(BuildContext context) {
+  ListTile themeListTile(BuildContext context, ThemeProvider themeValue) {
+    bool state = themeValue.selectedTheme == themeValue.light;
+    return ListTile(
+      onTap: () {
+        Provider.of<ThemeProvider>(context, listen: false).swapTheme();
+      },
+      visualDensity: VisualDensity.compact,
+      style: ListTileStyle.list,
+      shape: const RoundedRectangleBorder(
+        side: BorderSide(width: 1),
+      ),
+      title: _animatedCrossFadeText(state, LocaleTexts.lightTheme, LocaleTexts.darkTheme),
+      leading: _animatedCrossFadeIcon(state, const Icon(Icons.light_mode_outlined), const Icon(Icons.dark_mode_outlined)),
+    );
+  }
+
+  AnimatedCrossFade _animatedCrossFadeIcon(bool state, Icon firstIcon, Icon secondIcon) {
+    return AnimatedCrossFade(
+      crossFadeState: state ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      duration: const Duration(milliseconds: 500),
+      firstChild: Icon(
+        firstIcon.icon,
+        color: Colors.yellow,
+      ),
+      secondChild: Icon(
+        secondIcon.icon,
+        color: Colors.grey,
+      ),
+    );
+  }
+
+  AnimatedCrossFade _animatedCrossFadeText(bool state, String firstText, String secondText) {
+    return AnimatedCrossFade(
+      firstCurve: Curves.linear,
+      firstChild: Text(firstText.tr()),
+      secondChild: Text(secondText.tr()),
+      crossFadeState: state ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      duration: const Duration(milliseconds: 500),
+    );
+  }
+
+  ListTile switchViewListView(BuildContext context, viewClass value, ThemeProvider themeProvider) {
+    bool state = value.switchView;
     return ListTile(
       onTap: () {
         Provider.of<viewClass>(context, listen: false).swapView();
@@ -123,22 +157,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           width: 1,
         ),
       ),
-      title: Consumer<viewClass>(
-        builder: (context, value, child) {
-          return Text(value.switchView == true ? "gridView".tr() : "listView".tr());
-        },
-      ),
-      leading: Consumer<viewClass>(
-        builder: (context, value, child) {
-          return Icon(
-            value.switchView == true ? Icons.square : Icons.list,
-          );
-        },
-      ),
+      leading: _animatedCrossFadeIcon(state, const Icon(Icons.square_outlined), const Icon(Icons.list)),
+      title: _animatedCrossFadeText(state, LocaleTexts.gridView, LocaleTexts.listView),
     );
   }
 
-  ListTile languageListTile() {
+  ListTile languageListTile(BuildContext context, themeValue) {
     return ListTile(
       onTap: () {
         changeLanguage();
